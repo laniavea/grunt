@@ -1,3 +1,5 @@
+pub mod types;
+
 fn main() {
-    println!("Hello, world!");
+    let test_axis = types::Axis::new();
 }
