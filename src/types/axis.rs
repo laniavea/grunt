@@ -1,5 +1,20 @@
 use crate::types::Axis;
 
+#[derive(Debug, Clone)]
+pub enum AxisError {
+    InvalidRange,
+}
+
+impl std::fmt::Display for AxisError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            AxisError::InvalidRange => writeln!(f, "End's value must be bigger than start's ones"),
+        }
+    }
+}
+
+impl std::error::Error for AxisError {}
+
 impl Default for Axis {
     fn default() -> Axis {
         Axis::new()
@@ -17,6 +32,11 @@ impl Axis {
             block_centers: vec![],
             block_edges: vec![],
         }
+    }
+
+    pub fn generate_axis_edges<T: Into<f64>>(start: T, end: T, step: Option<T>, include_last: bool) -> Result<Axis, AxisError> {
+        let (start, end) = (start.into(), end.into());
+        Ok(Axis::new())
     }
 }
 
