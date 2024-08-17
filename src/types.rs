@@ -15,7 +15,7 @@ pub struct Axis {
     /// Number of centers(blocks)
     blocks_count: usize,
     /// Center positions
-    block_centers: Vec<f64>,
+    blocks_centers: Vec<f64>,
     /// Edge positions
-    block_edges: Vec<f64>,
+    blocks_edges: Vec<f64>,
 }
