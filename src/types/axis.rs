@@ -310,26 +310,71 @@ impl Axis {
 }
 
 impl Axis {
+    /// Returns first edge for axis
+    /// # Example
+    /// ```
+    /// use grunt::types::Axis;
+    /// let ax = Axis::generate_axis_on_centers(1.0, 2.0, Some(0.5)).unwrap();
+    /// assert_eq!(*ax.blocks_edges(), vec![0.75, 1.25, 1.75, 2.25]);
+    /// assert_eq!(ax.start(), 0.75);
+    /// ```
     pub fn start(&self) -> f64 {
         self.start
     } 
 
+    /// Returns last edge for axis
+    /// # Example
+    /// ```
+    /// use grunt::types::Axis;
+    /// let ax = Axis::generate_axis_on_centers(1.0, 2.0, Some(0.5)).unwrap();
+    /// assert_eq!(*ax.blocks_edges(), vec![0.75, 1.25, 1.75, 2.25]);
+    /// assert_eq!(ax.end(), 2.25);
+    /// ```
     pub fn end(&self) -> f64 {
         self.end
     }
 
+    /// Returns step if axis was generated with it, otherwise - None
+    /// # Example
+    /// ```
+    /// use grunt::types::Axis;
+    /// let ax = Axis::generate_axis_on_centers(1.0, 2.0, Some(0.5)).unwrap();
+    /// assert_eq!(*ax.blocks_edges(), vec![0.75, 1.25, 1.75, 2.25]);
+    /// assert_eq!(ax.step(), Some(0.5));
+    /// ```
     pub fn step(&self) -> Option<f64> {
         self.step
     }
 
+    /// Returns number of blocks inside axis, block - "object" that is between two edges 
+    /// # Example
+    /// ```
+    /// use grunt::types::Axis;
+    /// let ax = Axis::generate_axis_on_edges(1.0, 2.0, Some(0.5)).unwrap();
+    /// assert_eq!(ax.blocks_count(), 2);
+    /// ```
     pub fn blocks_count(&self) -> usize {
         self.blocks_count
     }
 
+    /// Returns blocks centers, where block is "object" that is between two edges
+    /// # Example
+    /// ```
+    /// use grunt::types::Axis;
+    /// let ax = Axis::generate_axis_on_edges(1.0, 2.0, Some(0.5)).unwrap();
+    /// assert_eq!(*ax.blocks_centers(), vec![1.25, 1.75]);
+    /// ```
     pub fn blocks_centers(&self) -> &Vec<f64> {
         &self.blocks_centers
     }
 
+    /// Returns axises edges, edges represents borders, which are separating two block
+    /// # Example
+    /// ```
+    /// use grunt::types::Axis;
+    /// let ax = Axis::generate_axis_on_centers(1.0, 2.0, Some(0.5)).unwrap();
+    /// assert_eq!(*ax.blocks_edges(), vec![0.75, 1.25, 1.75, 2.25]);
+    /// ```
     pub fn blocks_edges(&self) -> &Vec<f64> {
         &self.blocks_edges
     }

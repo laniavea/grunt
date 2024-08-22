@@ -1,9 +1,13 @@
 mod axis;
 
-/// Struct to store Axis and some related params
-/// Axis should ensure any elements from -10000 to 10000 with 3 decimal places
-/// Axis can only be sequential
-/// Start and End for axis are edges, not centers
+/// Struct to store Axis and some related params.
+///
+/// 1. Axis should ensure any elements from -10000 to 10000 with 3 decimal places.
+/// 2. Axis can only be sequential.
+/// 3. Start and End for axis are edges, not centers.
+///
+/// Axis can be devided to two parts: edges and centers. You should think about Axis as a struct to
+/// store grid(image) data, so every block inside it have 2 edges and 1 center.
 #[derive(Debug, Clone)]
 pub struct Axis {
     /// First edge for axis
