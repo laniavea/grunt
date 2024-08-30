@@ -1,6 +1,6 @@
 from gruntpy import PyAxis;
 
-axis = PyAxis()
+axis = PyAxis.generate_axis_on_edges(1, 10)
 
 print(axis.start)
 print(axis.end)

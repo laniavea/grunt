@@ -1,3 +1,10 @@
-mod types;
+pub mod types;
+pub mod model3d;
 
 pub use types::Axis;
+pub use types::axis::AxisError;
+
+pub use types::Params3D;
+
+pub use model3d::Model3D;
+pub use model3d::generate_model::generate_model3d;

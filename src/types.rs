@@ -1,4 +1,7 @@
-mod axis;
+use std::sync::Arc;
+
+pub mod axis;
+pub mod params3d;
 
 /// Struct to store Axis and some related params.
 ///
@@ -22,4 +25,10 @@ pub struct Axis {
     blocks_centers: Vec<f64>,
     /// Edge positions
     blocks_edges: Vec<f64>,
+}
+
+#[derive(Debug, Clone)]
+pub struct Params3D {
+    axis_x: Arc<Axis>,
+    axis_y: Arc<Axis>,
 }

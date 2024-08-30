@@ -1,7 +1,9 @@
 use grunt::Axis;
-use crate::types::PyAxis;
 
 use pyo3::prelude::*;
+use pyo3::exceptions::PyValueError;
+
+use crate::types::PyAxis;
 
 #[pymethods]
 impl PyAxis {
@@ -9,6 +11,56 @@ impl PyAxis {
     fn new() -> PyAxis {
         PyAxis {
             axis: Axis::new()
+        }
+    }
+
+    #[staticmethod]
+    fn from_vec_as_edges(input_nums: Vec<f64>) -> PyResult<PyAxis> {
+        match Axis::from_vec_as_edges(&input_nums) {
+            Ok(axis) => Ok(PyAxis {
+                axis
+            }),
+            Err(e) => {
+                Err(PyValueError::new_err(format!("Axis error: {e}")))
+            }
+        }
+    }
+
+    #[staticmethod]
+    fn from_vec_as_centers(input_nums: Vec<f64>) -> PyResult<PyAxis> {
+        match Axis::from_vec_as_centers(&input_nums) {
+            Ok(axis) => Ok(PyAxis {
+                axis
+            }),
+            Err(e) => {
+                Err(PyValueError::new_err(format!("Axis error: {e}")))
+            }
+        }
+    }
+
+    #[staticmethod]
+    #[pyo3(signature = (start, end, step=None))]
+    fn generate_axis_on_edges(start: f64, end: f64, step: Option<f64>) -> PyResult<PyAxis> {
+        match Axis::generate_axis_on_edges(start, end, step) {
+            Ok(axis) => Ok(PyAxis {
+                axis
+            }),
+            Err(e) => {
+                Err(PyValueError::new_err(format!("Axis error: {e}")))
+            }
+        }
+    }
+
+    #[staticmethod]
+    #[pyo3(signature = (start, end, step=None))]
+    fn generate_axis_on_centers(start: f64, end: f64, step: Option<f64>) -> PyResult<PyAxis> {
+        match Axis::generate_axis_on_centers(start, end, step) {
+            Ok(axis) => Ok(PyAxis {
+                axis
+            }),
+            Err(e) => {
+                Err(PyValueError::new_err(format!("Axis error: {e}")))
+            }
         }
     }
 

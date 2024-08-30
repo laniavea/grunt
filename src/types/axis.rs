@@ -8,6 +8,7 @@ pub enum AxisError {
     NotOrderedVec,
     TooSmallVec,
     MinimalStep,
+    NotEnoughElements,
 }
 
 impl std::fmt::Display for AxisError {
@@ -18,6 +19,7 @@ impl std::fmt::Display for AxisError {
             AxisError::NotOrderedVec => writeln!(f, "Values in input Vec must constanly increase"),
             AxisError::TooSmallVec => writeln!(f, "Input vector must contain at least 2 elements"),
             AxisError::MinimalStep => writeln!(f, "Minimal step for input vec must be at least 0.002"),
+            AxisError::NotEnoughElements => writeln!(f, "Every generated axis must have at least two elements"),
         }
     }
 }
@@ -258,6 +260,11 @@ impl Axis {
         };
 
         let iter_count = (((end-start) * 1000.0).round() / 1000.0 / step).floor() as usize + 1;
+
+        if iter_count < 2 {
+            return Err(AxisError::NotEnoughElements)
+        }
+
         Ok((start, step, iter_count))
     }
 
