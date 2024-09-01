@@ -13,11 +13,11 @@ impl Default for Params3D {
 }
 
 impl Params3D {
-    pub fn new(axis_x: Arc<Axis>, axis_y: Arc<Axis>) -> Params3D {
-        Params3D {
+    pub fn new(axis_x: Arc<Axis>, axis_y: Arc<Axis>) -> Arc<Params3D> {
+        Arc::new(Params3D {
             axis_x,
             axis_y,
-        }
+        })
     }
 }
 

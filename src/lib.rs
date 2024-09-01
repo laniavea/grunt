@@ -1,5 +1,5 @@
-pub mod types;
-pub mod model3d;
+mod types;
+mod model3d;
 
 pub use types::Axis;
 pub use types::axis::AxisError;
