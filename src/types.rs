@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 pub mod axis;
 pub mod params3d;
+pub mod borders;
 
 /// Struct to store Axis and some related params.
 ///
@@ -25,6 +26,20 @@ pub struct Axis {
     blocks_centers: Vec<f64>,
     /// Edge positions
     blocks_edges: Vec<f64>,
+}
+
+#[derive(Debug, Clone)]
+pub enum BorderType {
+    Random,
+    RandomWithStep(u16, f32),
+}
+
+#[derive(Debug, Clone)]
+pub struct Borders {
+    number_of_borders: u8,
+    border_same_pattern: bool,
+    borders_type: Vec<BorderType>,
+    borders_limits: Vec<[u32; 2]>,
 }
 
 #[derive(Debug, Clone)]
