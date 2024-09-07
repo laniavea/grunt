@@ -4,12 +4,14 @@ use crate::types::{Borders, BorderType};
 #[derive(Debug, Clone)]
 pub enum BorderError {
     IncorrectBordersCount,
+    IncorrectBordersLimits,
 }
 
 impl std::fmt::Display for BorderError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            BorderError::IncorrectBordersCount => write!(f, "Number of borders must be between 1 and 255")
+            BorderError::IncorrectBordersCount => write!(f, "Number of borders must be between 1 and 255"),
+            BorderError::IncorrectBordersLimits => write!(f, "Your border limits must be [min value, <= max value]")
         }
     }
 }
@@ -20,7 +22,6 @@ impl Default for Borders {
     fn default() -> Borders {
         Borders {
             number_of_borders: 2,
-            border_same_pattern: false,
             borders_type: vec![BorderType::Random, BorderType::Random],
             borders_limits: vec![[5, 10], [15, 20]]
         }
@@ -28,7 +29,11 @@ impl Default for Borders {
 }
 
 impl Borders {
-    pub fn new<T> (number_of_borders: T, borders_type: &[BorderType], borders_limits:&[[u32; 2]]) -> Result<Borders, Box<dyn std::error::Error>>
+    pub fn new<T> (
+        number_of_borders: T,
+        borders_type: &[BorderType],
+        borders_limits:&[[u32; 2]]
+    ) -> Result<Borders, Box<dyn std::error::Error>>
     where 
         T: TryInto<u8>,
     {
@@ -42,12 +47,28 @@ impl Borders {
             Err(_) => return Err(Box::new(BorderError::IncorrectBordersCount))
         };
 
-        //TODO: Check border limits
+        if !borders_limits.iter().all(|now_limits| now_limits[0] <= now_limits[1]) {
+            return Err(Box::new(BorderError::IncorrectBordersLimits))
+        }
+
         Ok(Borders {
-            border_same_pattern: false,
             number_of_borders,
             borders_type: borders_type.to_vec(),
             borders_limits: borders_limits.to_vec(),
         })
+    }
+}
+
+impl Borders {
+    pub fn number_of_borders(&self) -> u8 {
+        self.number_of_borders
+    }
+
+    pub fn borders_type(&self) -> &Vec<BorderType> {
+        &self.borders_type
+    }
+
+    pub fn borders_limits(&self) -> &Vec<[u32; 2]> {
+        &self.borders_limits
     }
 }

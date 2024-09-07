@@ -28,17 +28,25 @@ pub struct Axis {
     blocks_edges: Vec<f64>,
 }
 
+/// Enum determines method to generate borders
 #[derive(Debug, Clone)]
 pub enum BorderType {
+    /// Random value between limits
     Random,
+    /// Random value between limits with step < max step(1) and probability of step(2)
     RandomWithStep(u16, f32),
 }
 
+/// Stucts to determine borders params. That means that every layer will look for it borders params
+/// and be generated based on it.
+/// You can determine less or more params, every layer x will be take data by module(x mod n.len)
 #[derive(Debug, Clone)]
 pub struct Borders {
+    /// Determines number of layers and borders
     number_of_borders: u8,
-    border_same_pattern: bool,
+    /// Determines border type for every layer
     borders_type: Vec<BorderType>,
+    /// Determines limits within every layer will be generated
     borders_limits: Vec<[u32; 2]>,
 }
 
