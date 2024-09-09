@@ -1,8 +1,12 @@
 use std::sync::Arc;
 
-pub mod axis;
-pub mod params3d;
-pub mod borders;
+mod axis;
+pub use axis::AxisError;
+
+mod borders;
+mod fill_values;
+
+mod params3d;
 
 /// Struct to store Axis and some related params.
 ///
@@ -48,6 +52,19 @@ pub struct Borders {
     borders_type: Vec<BorderType>,
     /// Determines limits within every layer will be generated
     borders_limits: Vec<[u32; 2]>,
+}
+
+#[derive(Debug, Clone)]
+pub enum FillType {
+    RandomBetween(i32, i32),
+    ValueFrom(Vec<f32>),
+}
+
+#[derive(Debug, Clone)]
+pub struct FillValues {
+    fill_values: Vec<Vec<FillType>>,
+    values_smooth: u16,
+    is_preset_ordered: bool,
 }
 
 #[derive(Debug, Clone)]

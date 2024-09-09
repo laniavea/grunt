@@ -1,6 +1,6 @@
 use crate::types::{Borders, BorderType};
 
-// Possible errors during Axis creation
+// Possible errors during Borders creation
 #[derive(Debug, Clone)]
 pub enum BorderError {
     IncorrectBordersCount,
