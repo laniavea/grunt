@@ -6,13 +6,9 @@ mod tests;
 mod types;
 mod model3d;
 
-pub use types::Axis;
-pub use types::AxisError;
-
-pub use types::Borders;
-pub use types::BorderType;
-
-pub use types::FillValues;
+pub use types::{Axis, AxisError};
+pub use types::{Borders, BorderType};
+pub use types::{FillValues, FillType};
 
 pub use types::Params3D;
 
@@ -26,8 +22,6 @@ fn main() {
         Ok(_) => (),
         Err(err) => println!("Error, {}", err),
     }
-
-    println!("{:?}", size_of::<types::Borders>());
 }
 
 fn create_model() -> Result<(), Box<dyn std::error::Error>> {
@@ -35,11 +29,18 @@ fn create_model() -> Result<(), Box<dyn std::error::Error>> {
 
     let borders_type = vec![BorderType::Random];
     let borders_limits = vec![[19, 23]];
-    let borders = Borders::new(8i32, &borders_type, &borders_limits)?;
+    let borders = Arc::new(Borders::new(8i32, &borders_type, &borders_limits)?);
+
+    let fill_values = Arc::new(vec![FillValues::default()]);
 
     println!("{:?}", borders);
 
-    let params = Params3D::new(test_axis.clone(), test_axis);
+    let params = Params3D::new(
+        test_axis.clone(),
+        test_axis,
+        borders,
+        fill_values
+    );
 
     let model = generate_model3d(params);
 

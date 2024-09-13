@@ -11,28 +11,36 @@ impl std::fmt::Display for FillValuesError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             FillValuesError::NotEnoughtElements => write!(f, "Number of values to fill must be at least 1"),
-            FillValuesError::IncorrectFillLimits => write!(f, "Your border FillLimits must be [min value, <= max value]")
+            FillValuesError::IncorrectFillLimits => write!(f, "Your border FillLimit must be [min value, <= max value]")
         }
     }
 }
 
 impl std::error::Error for FillValuesError {}
 
+impl Default for FillValues {
+    fn default() -> FillValues {
+        FillValues {
+            fill_values: vec![FillType::RandomBetween(1, 10)],
+            values_smooth: 0,
+            is_preset_ordered: true,
+        }
+    }
+}
+
 impl FillValues {
-    pub fn new (fill_values: Vec<Vec<FillType>>, values_smooth: u16, is_preset_ordered: bool) -> 
+    pub fn new (fill_values: Vec<FillType>, values_smooth: u16, is_preset_ordered: bool) -> 
         Result<FillValues, FillValuesError> 
     {
-        for model_fill in &fill_values {
-            for fill_value in model_fill {
-                match fill_value {
-                    FillType::RandomBetween(lower_bound, upper_bound) => {
-                        if lower_bound > upper_bound {
-                            return Err(FillValuesError::IncorrectFillLimits)
-                        };
-                    },
-                    FillType::ValueFrom(values) => {
-                        if values.is_empty() { return Err(FillValuesError::NotEnoughtElements) };
-                    }
+        for fill_value in &fill_values {
+            match fill_value {
+                FillType::RandomBetween(lower_bound, upper_bound) => {
+                    if lower_bound > upper_bound {
+                        return Err(FillValuesError::IncorrectFillLimits)
+                    };
+                },
+                FillType::ValueFrom(values) => {
+                    if values.is_empty() { return Err(FillValuesError::NotEnoughtElements) };
                 }
             }
         }
@@ -46,7 +54,7 @@ impl FillValues {
 }
 
 impl FillValues {
-    pub fn fill_values(&self) -> &Vec<Vec<FillType>> {
+    pub fn fill_values(&self) -> &Vec<FillType> {
         &self.fill_values
     }
 

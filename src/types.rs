@@ -54,16 +54,23 @@ pub struct Borders {
     borders_limits: Vec<[u32; 2]>,
 }
 
+/// Enum determines method to fill values for every layer
 #[derive(Debug, Clone)]
 pub enum FillType {
+    /// Random value between two, both incl
     RandomBetween(i32, i32),
+    /// Random value pick from vec
     ValueFrom(Vec<f32>),
 }
 
+/// Struct to store data for every layer, and some values to connect layers
 #[derive(Debug, Clone)]
 pub struct FillValues {
-    fill_values: Vec<Vec<FillType>>,
+    /// Fill type for every layer
+    fill_values: Vec<FillType>,
+    /// Smooth hardness (how many values can be changed to smooth)
     values_smooth: u16,
+    /// Makes fill_values random or ordered
     is_preset_ordered: bool,
 }
 
@@ -71,4 +78,6 @@ pub struct FillValues {
 pub struct Params3D {
     axis_x: Arc<Axis>,
     axis_y: Arc<Axis>,
+    borders: Arc<Borders>,
+    fill_values: Arc<Vec<FillValues>>,
 }

@@ -1,13 +1,9 @@
 mod types;
 mod model3d;
 
-pub use types::Axis;
-pub use types::AxisError;
-
-pub use types::Borders;
-pub use types::BorderType;
-
-pub use types::FillValues;
+pub use types::{Axis, AxisError};
+pub use types::{Borders, BorderType};
+pub use types::{FillValues, FillType};
 
 pub use types::Params3D;
 
