@@ -8,4 +8,4 @@ pub use types::{FillValues, FillType};
 pub use types::Params3D;
 
 pub use model3d::Model3D;
-pub use model3d::generate_model::generate_model3d;
+pub use model3d::generate_model3d;

@@ -13,7 +13,7 @@ pub use types::{FillValues, FillType};
 pub use types::Params3D;
 
 pub use model3d::Model3D;
-pub use model3d::generate_model::generate_model3d;
+pub use model3d::generate_model3d;
 
 fn main() {
     let res = create_model();
@@ -25,15 +25,13 @@ fn main() {
 }
 
 fn create_model() -> Result<(), Box<dyn std::error::Error>> {
-    let test_axis =  Arc::new(Axis::generate_axis_on_edges(1, 2, None)?);
+    let test_axis =  Arc::new(Axis::generate_axis_on_edges(1, 1000, None)?);
 
     let borders_type = vec![BorderType::Random];
     let borders_limits = vec![[19, 23]];
-    let borders = Arc::new(Borders::new(8i32, &borders_type, &borders_limits)?);
+    let borders = Arc::new(Borders::new(1, &borders_type, &borders_limits)?);
 
     let fill_values = Arc::new(vec![FillValues::default()]);
-
-    println!("{:?}", borders);
 
     let params = Params3D::new(
         test_axis.clone(),
