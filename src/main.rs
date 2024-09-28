@@ -25,7 +25,7 @@ fn main() {
 }
 
 fn create_model() -> Result<(), Box<dyn std::error::Error>> {
-    let test_axis =  Arc::new(Axis::generate_axis_on_edges(1, 1000, None)?);
+    let test_axis =  Arc::new(Axis::generate_axis_on_edges(1, 10, None)?);
 
     let borders_type = vec![BorderType::Random];
     let borders_limits = vec![[19, 23]];
