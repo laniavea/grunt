@@ -29,8 +29,70 @@ pub fn generate_borders(params: Arc<Params3D>) -> Vec<Vec<Vec<u32>>> {
                 BorderType::RandomWithStep(step, prob) => {
                     random_with_step::generate_layer(step, prob, axes_size, now_limits)
                 },
-        })
+        });
+
+        //TODO: If validation needed
+        match border_types[now_border_id / number_of_borders] {
+            BorderType::Random => { validate_layer(&borders[borders.len() - 1], now_limits, None)},
+            BorderType::RandomWithStep(step, _prob) => {
+                validate_layer(&borders[borders.len() - 1], now_limits, Some(step));
+            }
+        }
     }
 
     borders
+}
+
+//TODO: Rewrite to Result type and logging
+pub fn validate_layer(border_to_check: &Vec<Vec<u32>>, limits: [u32; 2], step: Option<u16>) {
+    // for i in border_to_check {
+    //     for j in i {
+    //         print!("{j}\t")
+    //     }
+    //     println!();
+    // }
+
+    if border_to_check.len() < 2 || border_to_check[0].len() < 2 {
+        panic!("Cannot validate layer because of small size");
+    }
+
+    let mut pr_el = border_to_check[0][0];
+    if pr_el < limits[0] || pr_el > limits[1] {
+        panic!("Element y - 0; x - 0: out of limits bounds");
+    }
+
+    for (now_id, now_el) in border_to_check[0].iter().enumerate().skip(1) {
+        if *now_el < limits[0] || *now_el > limits[1] {
+            panic!("Element y - 0; x - {now_id}: out of limits bounds");
+        }
+
+        if step.is_some() && pr_el.abs_diff(*now_el) as u16 > step.unwrap() {
+            panic!("Element y - 0; x - {now_id}: step overflow");
+        }
+
+        pr_el = *now_el;
+    }
+
+    for (now_y_id, now_y) in border_to_check.iter().enumerate().skip(1) {
+        let mut pr_val = now_y[0];
+        if pr_val < limits[0] || pr_val > limits[1] {
+            panic!("Element y - {now_y_id}; x - 0: out of limits bounds");
+        }
+
+        for (now_x_id, now_x) in now_y.iter().enumerate().skip(1) {
+            if *now_x < limits[0] || *now_x > limits[1] {
+                panic!("Element y - {now_y_id}; x - {now_x_id}: out of limits bounds");
+            }
+
+            if step.is_some() && pr_val.abs_diff(*now_x) as u16 > step.unwrap() {
+                panic!("Element y - {now_y_id}; x - {now_x_id}: step overflow PREVIOUS");
+            }
+
+            if step.is_some() && border_to_check[now_y_id-1][now_x_id].abs_diff(*now_x) as u16 > step.unwrap() {
+                panic!("Element y - {now_y_id}; x - {now_x_id}: step overflow UPPER");
+            }
+
+            pr_val = *now_x;
+        }
+    }
 }

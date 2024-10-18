@@ -1,4 +1,4 @@
-use rand::distributions::{Uniform, Distribution};
+use rand::distributions::{Distribution, Uniform};
 
 /// Funtion to generate layer based on limits and nothing more.
 /// axes_sizes - two usize, first - Y axis, second - X axis.
