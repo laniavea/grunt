@@ -1,4 +1,4 @@
-use crate::types::{Borders, BorderType};
+use crate::types::{BordersParams, BorderType};
 
 // Possible errors during Borders creation
 #[derive(Debug, Clone)]
@@ -18,9 +18,9 @@ impl std::fmt::Display for BorderError {
 
 impl std::error::Error for BorderError {}
 
-impl Default for Borders {
-    fn default() -> Borders {
-        Borders {
+impl Default for BordersParams {
+    fn default() -> BordersParams {
+        BordersParams {
             number_of_borders: 2,
             borders_type: vec![BorderType::Random, BorderType::Random],
             borders_limits: vec![[5, 10], [15, 20]]
@@ -28,12 +28,12 @@ impl Default for Borders {
     }
 }
 
-impl Borders {
+impl BordersParams {
     pub fn new<T> (
         number_of_borders: T,
         borders_type: &[BorderType],
         borders_limits:&[[u32; 2]]
-    ) -> Result<Borders, Box<dyn std::error::Error>>
+    ) -> Result<BordersParams, Box<dyn std::error::Error>>
     where 
         T: TryInto<u8>,
     {
@@ -51,7 +51,7 @@ impl Borders {
             return Err(Box::new(BorderError::IncorrectBordersLimits))
         }
 
-        Ok(Borders {
+        Ok(BordersParams {
             number_of_borders,
             borders_type: borders_type.to_vec(),
             borders_limits: borders_limits.to_vec(),
@@ -59,7 +59,7 @@ impl Borders {
     }
 }
 
-impl Borders {
+impl BordersParams {
     pub fn number_of_borders(&self) -> u8 {
         self.number_of_borders
     }

@@ -15,14 +15,18 @@ pub fn generate_borders(params: Arc<Params3D>) -> Vec<Vec<Vec<u32>>> {
     let number_of_borders = borders_params.number_of_borders() as usize;
     let border_types = borders_params.borders_type();
 
+    let now_limits_count = borders_params.borders_limits().len();
+    let now_border_types_count = border_types.len();
+
     let mut borders: Vec<Vec<Vec<u32>>> = Vec::with_capacity(params.borders().number_of_borders() as usize);
 
     for now_border_id in 0..number_of_borders {
-        let now_limits = borders_params.borders_limits()[now_border_id / number_of_borders];
+        let now_limits = borders_params.borders_limits()[now_border_id % now_limits_count];
+        println!("{:?}", now_limits);
         let axes_size = (ax_y_size, ax_x_size);
 
         borders.push(
-            match border_types[now_border_id / number_of_borders] {
+            match border_types[now_border_id % now_border_types_count] {
                 BorderType::Random => {
                     random::generate_layer(axes_size, now_limits)
                 },
@@ -44,7 +48,7 @@ pub fn generate_borders(params: Arc<Params3D>) -> Vec<Vec<Vec<u32>>> {
 }
 
 //TODO: Rewrite to Result type and logging
-pub fn validate_layer(border_to_check: &Vec<Vec<u32>>, limits: [u32; 2], step: Option<u16>) {
+pub fn validate_layer(border_to_check: &[Vec<u32>], limits: [u32; 2], step: Option<u16>) {
     // for i in border_to_check {
     //     for j in i {
     //         print!("{j}\t")

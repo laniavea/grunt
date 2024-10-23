@@ -2,7 +2,7 @@ mod types;
 mod model3d;
 
 pub use types::{Axis, AxisError};
-pub use types::{Borders, BorderType};
+pub use types::{BordersParams, BorderType};
 pub use types::{FillValues, FillType};
 
 pub use types::Params3D;

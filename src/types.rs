@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use nanoserde::SerJson;
+
 mod axis;
 pub use axis::AxisError;
 
@@ -16,7 +18,7 @@ mod params3d;
 ///
 /// Axis can be devided to two parts: edges and centers. You should think about Axis as a struct to
 /// store grid(image) data, so every block inside it have 2 edges and 1 center.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SerJson)]
 pub struct Axis {
     /// First edge for axis
     start: f64,
@@ -33,7 +35,7 @@ pub struct Axis {
 }
 
 /// Enum determines method to generate borders
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SerJson)]
 pub enum BorderType {
     /// Random value between limits
     Random,
@@ -44,8 +46,8 @@ pub enum BorderType {
 /// Stucts to determine borders params. That means that every layer will look for it borders params
 /// and be generated based on it.
 /// You can determine less or more params, every layer x will be take data by module(x mod n.len)
-#[derive(Debug, Clone)]
-pub struct Borders {
+#[derive(Debug, Clone, SerJson)]
+pub struct BordersParams {
     /// Determines number of layers and borders
     number_of_borders: u8,
     /// Determines border type for every layer
@@ -55,7 +57,7 @@ pub struct Borders {
 }
 
 /// Enum determines method to fill values for every layer
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SerJson)]
 pub enum FillType {
     /// Random value between two, both incl
     RandomBetween(i32, i32),
@@ -64,7 +66,7 @@ pub enum FillType {
 }
 
 /// Struct to store data for every layer, and some values to connect layers
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SerJson)]
 pub struct FillValues {
     /// Fill type for every layer
     fill_values: Vec<FillType>,
@@ -74,10 +76,10 @@ pub struct FillValues {
     is_preset_ordered: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, SerJson)]
 pub struct Params3D {
     axis_x: Arc<Axis>,
     axis_y: Arc<Axis>,
-    borders: Arc<Borders>,
+    borders_params: Arc<BordersParams>,
     fill_values: Arc<Vec<FillValues>>,
 }
